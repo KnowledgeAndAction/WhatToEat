@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">What To Eat</string>
+    <string name="app_name">吃什么</string>
+    <string name="feedback">意见反馈</string>
+    <string name="about">关于</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="called_takeaway">叫外卖</string>
+    <string name="shop_to_eat">到店吃</string>
 </resources>
