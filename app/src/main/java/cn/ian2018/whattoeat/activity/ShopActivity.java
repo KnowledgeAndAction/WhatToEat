@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -26,6 +27,9 @@ import cn.ian2018.whattoeat.utils.HttpUtil;
 import cn.ian2018.whattoeat.utils.ToastUtil;
 import cn.ian2018.whattoeat.view.FullyLinearLayoutManager;
 
+/**
+ * 商铺详情
+ */
 public class ShopActivity extends BaseActivity {
 
     private ImageView imageView;
@@ -38,6 +42,7 @@ public class ShopActivity extends BaseActivity {
     private ProgressDialog progressDialog;
     private SwipeRefreshLayout refreshLayout;
     private Toolbar toolbar;
+    private NestedScrollView nestedScrollView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +81,18 @@ public class ShopActivity extends BaseActivity {
     }
 
     private void setClick() {
+        // 设置滑动监听
+        nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY - oldScrollY > 0) {
+                    fab.hide();
+                } else {
+                    fab.show();
+                }
+            }
+        });
+
         // 设置fab的点击事件
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,6 +128,8 @@ public class ShopActivity extends BaseActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new FullyLinearLayoutManager(this));
         recyclerView.setNestedScrollingEnabled(false);
+
+        nestedScrollView = (NestedScrollView) findViewById(R.id.scrollView);
 
         // 设置标题和背景图
         toolbarLayout.setTitle(shop.getName());

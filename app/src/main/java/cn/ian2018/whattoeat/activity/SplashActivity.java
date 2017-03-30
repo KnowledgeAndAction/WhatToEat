@@ -4,6 +4,9 @@ import android.os.Bundle;
 
 import cn.ian2018.whattoeat.R;
 
+/**
+ * 启动页
+ */
 public class SplashActivity extends BaseActivity {
 
     @Override
