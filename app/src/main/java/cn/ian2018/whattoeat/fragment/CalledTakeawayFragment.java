@@ -1,5 +1,7 @@
 package cn.ian2018.whattoeat.fragment;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -10,7 +12,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.ian2018.whattoeat.R;
+import cn.ian2018.whattoeat.activity.ShopActivity;
+import cn.ian2018.whattoeat.adapter.RecyclerAdapter;
+import cn.ian2018.whattoeat.bean.Shop;
+import cn.ian2018.whattoeat.utils.HttpUtil;
 import cn.ian2018.whattoeat.utils.ToastUtil;
 
 /**
@@ -21,6 +30,9 @@ public class CalledTakeawayFragment extends android.support.v4.app.Fragment {
 
     private RecyclerView recyclerView;
     private FloatingActionButton fab;
+    private List<Shop> shopList = new ArrayList<>();
+    private RecyclerAdapter adapter;
+    private ProgressDialog progressDialog;
 
     @Nullable
     @Override
@@ -32,7 +44,46 @@ public class CalledTakeawayFragment extends android.support.v4.app.Fragment {
         // 设置交互事件
         setClick();
 
+        initData();
+
         return view;
+    }
+
+    private void initData() {
+        // 加载数据
+        showProgressDialog();
+        HttpUtil.getData(1, shopList, new HttpUtil.OnResult() {
+            @Override
+            public void success() {
+                closeProgressDialog();
+                showData();
+            }
+
+            @Override
+            public void error() {
+                closeProgressDialog();
+                ToastUtil.showShort("获取数据失败");
+            }
+        });
+    }
+
+    private void showData() {
+        if (adapter == null) {
+            adapter = new RecyclerAdapter(shopList);
+            recyclerView.setAdapter(adapter);
+        } else {
+            adapter.notifyDataSetChanged();
+        }
+        // 设置RecyclerView条目点击事件
+        adapter.setItemClickListener(new RecyclerAdapter.OnRecyclerViewOnClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Intent intent = new Intent(getContext(), ShopActivity.class);
+                intent.putExtra("type",1);
+                intent.putExtra("shop",shopList.get(position));
+                startActivity(intent);
+            }
+        });
     }
 
     private void setClick() {
@@ -96,5 +147,20 @@ public class CalledTakeawayFragment extends android.support.v4.app.Fragment {
 
         fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         fab.setRippleColor(getResources().getColor(R.color.colorPrimaryDark));
+    }
+
+    private void showProgressDialog() {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setMessage("正在加载");
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.show();
+        }
+    }
+
+    private void closeProgressDialog() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
     }
 }

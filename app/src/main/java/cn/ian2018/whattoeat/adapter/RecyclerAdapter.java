@@ -19,9 +19,10 @@ import cn.ian2018.whattoeat.bean.Shop;
  * Created by Administrator on 2017/1/23/023.
  */
 
-public class RecyclerAdatper extends RecyclerView.Adapter<RecyclerAdatper.ViewHolder> {
+public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
     private List<Shop> mShopList;
+    private OnRecyclerViewOnClickListener mListener;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -41,7 +42,18 @@ public class RecyclerAdatper extends RecyclerView.Adapter<RecyclerAdatper.ViewHo
         }
     }
 
-    public RecyclerAdatper(List<Shop> fruitList) {
+    /**
+     * 定义一个item点击事件接口
+     */
+    public interface OnRecyclerViewOnClickListener {
+        void onItemClick(View view, int position);
+    }
+
+    public void setItemClickListener(OnRecyclerViewOnClickListener listener){
+        this.mListener = listener;
+    }
+
+    public RecyclerAdapter(List<Shop> fruitList) {
         mShopList = fruitList;
     }
 
@@ -54,7 +66,9 @@ public class RecyclerAdatper extends RecyclerView.Adapter<RecyclerAdatper.ViewHo
         holder.shopView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int posotion = holder.getAdapterPosition();
+                int position = holder.getAdapterPosition();
+                // 设置接口回调
+                mListener.onItemClick(view, position);
             }
         });
 
@@ -64,9 +78,9 @@ public class RecyclerAdatper extends RecyclerView.Adapter<RecyclerAdatper.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Shop shop = mShopList.get(position);
-        Glide.with(MyApplication.getContext()).load(shop.getImageUrl()).into(holder.shopImage);
+        Glide.with(MyApplication.getContext()).load(shop.getImageUrl()).placeholder(R.drawable.ic_placeholder).into(holder.shopImage);
         holder.shopNameText.setText(shop.getName());
-        holder.shopPhoneText.setText("电话：" + shop.getPhone());
+        holder.shopPhoneText.setText(shop.getPhone());
         holder.shopLocText.setText("位置：" + shop.getLocation());
     }
 

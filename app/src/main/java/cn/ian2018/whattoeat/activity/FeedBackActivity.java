@@ -4,6 +4,9 @@ import android.os.Bundle;
 
 import cn.ian2018.whattoeat.R;
 
+/**
+ * 意见反馈
+ */
 public class FeedBackActivity extends BaseActivity {
 
     @Override
