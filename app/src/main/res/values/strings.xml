@@ -7,4 +7,5 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="called_takeaway">叫外卖</string>
     <string name="shop_to_eat">到店吃</string>
+    <string name="random_button">吃这家</string>
 </resources>

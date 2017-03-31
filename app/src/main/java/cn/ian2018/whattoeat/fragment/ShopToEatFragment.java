@@ -5,11 +5,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +54,37 @@ public class ShopToEatFragment extends android.support.v4.app.Fragment {
         showData();
 
         return view;
+    }
+
+    public void showDialog() {
+        // 产生一个随机数
+        int number = (int) (Math.random() * 100) + 1;
+        int position = number % shopList.size();
+        final Shop shop = shopList.get(position);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        AlertDialog dialog = builder.create();
+        View view = View.inflate(getContext(), R.layout.dialog_random, null);
+        dialog.setView(view, 0, 0, 0, 0);
+
+        ImageView shopImage = (ImageView) view.findViewById(R.id.image_view);
+        TextView shopName = (TextView) view.findViewById(R.id.name);
+        Button button = (Button) view.findViewById(R.id.bt_to);
+
+        Glide.with(getContext()).load(shop.getImageUrl()).placeholder(R.drawable.ic_placeholder).into(shopImage);
+        shopName.setText(shop.getName());
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ShopActivity.class);
+                intent.putExtra("type",2);
+                intent.putExtra("shop",shop);
+                startActivity(intent);
+            }
+        });
+
+        dialog.show();
     }
 
     private void initData() {

@@ -82,6 +82,10 @@ public class MainFragment extends android.support.v4.app.Fragment {
             super(fm);
         }
 
+        public ShopToEatFragment getShopToEatFragment() {
+            return shopToEatFragment;
+        }
+
         @Override
         public Fragment getItem(int position) {
             if (position == 1) {
