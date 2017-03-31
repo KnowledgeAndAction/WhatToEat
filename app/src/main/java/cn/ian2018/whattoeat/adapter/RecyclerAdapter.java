@@ -81,7 +81,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         Glide.with(MyApplication.getContext()).load(shop.getImageUrl()).placeholder(R.drawable.ic_placeholder).into(holder.shopImage);
         holder.shopNameText.setText(shop.getName());
         holder.shopPhoneText.setText(shop.getPhone());
-        holder.shopLocText.setText("位置：" + shop.getLocation());
+        holder.shopLocText.setText(shop.getLocation());
     }
 
     @Override
