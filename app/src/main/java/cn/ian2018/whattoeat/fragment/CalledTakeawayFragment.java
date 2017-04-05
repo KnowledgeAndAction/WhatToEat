@@ -155,7 +155,7 @@ public class CalledTakeawayFragment extends android.support.v4.app.Fragment {
         final Shop shop = shopList.get(position);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        AlertDialog dialog = builder.create();
+        final AlertDialog dialog = builder.create();
         View view = View.inflate(getContext(), R.layout.dialog_random, null);
         dialog.setView(view, 0, 0, 0, 0);
 
@@ -174,6 +174,7 @@ public class CalledTakeawayFragment extends android.support.v4.app.Fragment {
                 intent.putExtra("type",1);
                 intent.putExtra("shop",shop);
                 startActivity(intent);
+                dialog.cancel();
             }
         });
 

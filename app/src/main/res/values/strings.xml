@@ -8,4 +8,9 @@
     <string name="called_takeaway">叫外卖</string>
     <string name="shop_to_eat">到店吃</string>
     <string name="random_button">吃这家</string>
+    <string name="feedback_edit_text">请输入您的意见</string>
+    <string name="submit_button">提 交</string>
+    <string name="feed_back_group">欢迎加入反馈群，让我们共同见证“吃什么”的成长 群号：626180781</string>
+    <string name="feed_back_name">意见反馈</string>
+    <string name="about_name">关于</string>
 </resources>
