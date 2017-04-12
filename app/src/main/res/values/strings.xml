@@ -13,4 +13,11 @@
     <string name="feed_back_group">欢迎加入反馈群，让我们共同见证“吃什么”的成长 群号：626180781</string>
     <string name="feed_back_name">意见反馈</string>
     <string name="about_name">关于</string>
+    <string name="textview_no_menu">暂时没有菜单，正在努力收集中，请谅解。如果您有菜单，希望您能帮我们完善它，将菜单发到反馈群上：626180781，非常感谢</string>
+    <string name="announcement">看这里</string>
+    <string name="announcement_name">公告</string>
+    <string name="share_button_text">分享吃什么</string>
+    <string name="about_feedback_text">欢迎加入反馈群：626180781</string>
+    <string name="about_contact_text">联系我们：chenshuai@ian2018.cn</string>
+    <string name="about_info_text">此应用为解决大学生不知道吃什么的难题而诞生，目前主要服务于河北大学新校区的学生，暂时提供的食物信息为北街部分，以后会扩充一些学校周边的食物信息。\n该应用分为叫外卖和到店吃两个模块。 主要展示北街的小吃信息。\n当实在不知道吃什么的时候，还有随机功能，为您随机推荐一种小吃。\n该应用由是一个四人小团队开发完成，成员有陈帅，崔国钊，周凯歌，陈鸿凯。</string>
 </resources>

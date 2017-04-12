@@ -8,7 +8,7 @@ android {
         applicationId "cn.ian2018.whattoeat"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 1
+        versionCode 2
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -18,14 +18,21 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    signingConfigs {
+        debug {
+            storeFile file('chenshuai.jks')
+            storePassword "chenshuaide"
+            keyAlias "chenshuai"
+            keyPassword "chenshuaide"
+        }
+    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-
     compile 'com.android.support:appcompat-v7:25.1.0'
     compile 'com.android.support:design:25.1.0'
     compile 'com.android.support:recyclerview-v7:25.1.0'
@@ -34,4 +41,13 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha8'
     compile 'cn.bmob.android:bmob-sdk:3.5.0'
     testCompile 'junit:junit:4.12'
+    compile files('libs/SocialSDK_QQ_Simplify.jar')
+    compile files('libs/umeng_social_api.jar')
+    compile files('libs/umeng_social_net.jar')
+    compile files('libs/umeng_social_tool.jar')
+    compile files('libs/umeng_social_shareboard.jar')
+    compile files('libs/umeng_social_shareview.jar')
+    compile files('libs/umeng_shareboard_widget.jar')
+    compile files('libs/GDTUnionSDK.4.9.542.min.jar')
+    compile files('libs/SocialSDK_WeChat_Simplify.jar')
 }

@@ -8,6 +8,7 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
+        android:src="@drawable/ic_menu_head"
         android:id="@+id/header_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

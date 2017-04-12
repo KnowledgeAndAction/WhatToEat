@@ -3,6 +3,10 @@ package cn.ian2018.whattoeat;
 import android.app.Application;
 import android.content.Context;
 
+import com.umeng.socialize.Config;
+import com.umeng.socialize.PlatformConfig;
+import com.umeng.socialize.UMShareAPI;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -25,12 +29,23 @@ public class MyApplication extends Application {
 
     private static Context sContext;
 
+
     @Override
     public void onCreate() {
         super.onCreate();
         // 初始化Bomb
         Bmob.initialize(this, Constant.BMOB_APP_ID);
         sContext = this;
+
+        // qq id和key
+        PlatformConfig.setQQZone(Constant.QQ_SHARE_ID, Constant.QQ_SHARE_KEY);
+        // 微信 id和key
+        PlatformConfig.setWeixin(Constant.WX_SHARE_ID, Constant.WX_SHARE_KEY);
+
+        // 初始化友盟分享
+        UMShareAPI.get(this);
+        // 打开友盟分享debug
+        Config.DEBUG = true;
 
         // 捕获全局未捕获的异常
         catchException();

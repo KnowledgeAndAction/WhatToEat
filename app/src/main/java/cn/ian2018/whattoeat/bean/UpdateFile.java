@@ -12,6 +12,8 @@ public class UpdateFile extends BmobObject {
     private BmobFile apkFile;
     private String description;
     private String headImage;
+    private String announcementTitle;
+    private boolean isAnnouncement;
 
     public int getVersion() {
         return version;
@@ -43,5 +45,21 @@ public class UpdateFile extends BmobObject {
 
     public void setHeadImage(String headImage) {
         this.headImage = headImage;
+    }
+
+    public boolean isAnnouncement() {
+        return isAnnouncement;
+    }
+
+    public void setAnnouncement(boolean announcement) {
+        isAnnouncement = announcement;
+    }
+
+    public String getAnnouncementTitle() {
+        return announcementTitle;
+    }
+
+    public void setAnnouncementTitle(String announcementTitle) {
+        this.announcementTitle = announcementTitle;
     }
 }

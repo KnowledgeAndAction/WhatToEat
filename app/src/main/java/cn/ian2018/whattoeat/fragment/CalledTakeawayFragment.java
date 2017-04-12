@@ -136,7 +136,7 @@ public class CalledTakeawayFragment extends android.support.v4.app.Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO 设置fab的点击事件
+                // 设置fab的点击事件
                 if (tabLayout.getSelectedTabPosition() == 0) {
                     showDialog();
                 } else if (tabLayout.getSelectedTabPosition() == 1) {

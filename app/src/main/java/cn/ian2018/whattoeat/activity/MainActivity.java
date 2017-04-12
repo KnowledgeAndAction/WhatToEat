@@ -49,6 +49,7 @@ public class MainActivity extends BaseActivity {
     private ProgressDialog progressDialog;
     private String imageUrl;
     private ImageView headImageView;
+    private MenuItem menuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +118,9 @@ public class MainActivity extends BaseActivity {
         // 设置头部图片
         View view = navigationView.inflateHeaderView(R.layout.nav_header_main);
         headImageView = (ImageView) view.findViewById(R.id.header_image);
+        // 获取侧滑菜单的公告条目  用来看是否需要显示
+        menuItem = navigationView.getMenu().findItem(R.id.nav_announcement);
+
 
         // 设置侧滑菜单点击事件
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -131,6 +135,9 @@ public class MainActivity extends BaseActivity {
                         break;
                     case R.id.nav_about:
                         startActivity(new Intent(getApplicationContext(),AboutActivity.class));
+                        break;
+                    case R.id.nav_announcement:
+                        startActivity(new Intent(getApplicationContext(),AnnouncementActivity.class));
                         break;
                 }
                 return true;
@@ -157,9 +164,17 @@ public class MainActivity extends BaseActivity {
             @Override
             public void done(UpdateFile updateFile, BmobException e) {
                 if (e == null) {
+                    // 看是否有公告，让菜单条目是否显示
+                    if (updateFile.isAnnouncement()) {
+                        menuItem.setVisible(true);
+                        menuItem.setTitle(updateFile.getAnnouncementTitle());
+                    } else {
+                        menuItem.setVisible(false);
+                    }
+
                     // 获取图片地址
                     imageUrl = updateFile.getHeadImage();
-                    Glide.with(getApplicationContext()).load(imageUrl).into(headImageView);
+                    Glide.with(getApplicationContext()).load(imageUrl).placeholder(R.drawable.ic_menu_head).into(headImageView);
 
                     // 如果bmob中的版本号大于本地版本号
                     if (updateFile.getVersion() > getVersionCode()) {

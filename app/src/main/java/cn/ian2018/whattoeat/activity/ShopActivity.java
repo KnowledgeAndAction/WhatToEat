@@ -1,6 +1,9 @@
 package cn.ian2018.whattoeat.activity;
 
 import android.app.ProgressDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -43,6 +46,7 @@ public class ShopActivity extends BaseActivity {
     private SwipeRefreshLayout refreshLayout;
     private Toolbar toolbar;
     private NestedScrollView nestedScrollView;
+    private TextView tv_no_menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +71,13 @@ public class ShopActivity extends BaseActivity {
         HttpUtil.getMenuData(shopId, shopMenuList, new HttpUtil.OnResult() {
             @Override
             public void success() {
-                MenuRecyclerAdapter adapter = new MenuRecyclerAdapter(shopMenuList);
-                recyclerView.setAdapter(adapter);
+                if(shopMenuList.size() == 0){
+                    tv_no_menu.setVisibility(View.VISIBLE);
+                } else {
+                    MenuRecyclerAdapter adapter = new MenuRecyclerAdapter(shopMenuList);
+                    recyclerView.setAdapter(adapter);
+                    tv_no_menu.setVisibility(View.GONE);
+                }
                 closeProgressDialog();
             }
 
@@ -109,6 +118,16 @@ public class ShopActivity extends BaseActivity {
                 finish();
             }
         });
+
+        tv_no_menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData data = ClipData.newPlainText("text","626180781");
+                cm.setPrimaryClip(data);
+                ToastUtil.showShort("已经将群号复制到粘贴板上");
+            }
+        });
     }
 
     private void initView() {
@@ -120,6 +139,7 @@ public class ShopActivity extends BaseActivity {
         refreshLayout.setEnabled(false);
 
         imageView = (ImageView) findViewById(R.id.image_view);
+        tv_no_menu = (TextView) findViewById(R.id.tv_no_menu);
         toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
