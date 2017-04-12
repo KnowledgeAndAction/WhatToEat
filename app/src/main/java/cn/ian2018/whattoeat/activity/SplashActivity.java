@@ -9,7 +9,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.qq.e.ads.splash.SplashAD;
@@ -30,6 +32,7 @@ public class SplashActivity extends BaseActivity {
     private RelativeLayout container;
     private ImageView splashImage;
     private boolean canJump;    // 是否跳过广告
+    private LinearLayout rootLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,10 +61,6 @@ public class SplashActivity extends BaseActivity {
                 != PackageManager.PERMISSION_GRANTED) {
             permissionList.add(Manifest.permission.ACCESS_COARSE_LOCATION);
         }
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_WIFI_STATE)
-                != PackageManager.PERMISSION_GRANTED) {
-            permissionList.add(Manifest.permission.ACCESS_WIFI_STATE);
-        }
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             permissionList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -72,8 +71,37 @@ public class SplashActivity extends BaseActivity {
             ActivityCompat.requestPermissions(this, permissions, 1);
         } else {
             // 请求开屏广告
-            requestAd();
+            // requestAd();
+            enterHome();
         }
+    }
+
+    /**
+     * 无广告进入方式
+     */
+    private void enterHome() {
+        AlphaAnimation alphaAnimation = new AlphaAnimation(0, 1);
+        alphaAnimation.setDuration(2000);
+        rootLayout.startAnimation(alphaAnimation);
+
+        new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                        finish();
+                    }
+                });
+            }
+        }.start();
     }
 
     /**
@@ -124,7 +152,8 @@ public class SplashActivity extends BaseActivity {
                             return;
                         }
                     }
-                    requestAd();
+                    // requestAd();
+                    enterHome();
                 } else {
                     ToastUtil.showShort("吃什么出了个小错误");
                     finish();
@@ -164,5 +193,6 @@ public class SplashActivity extends BaseActivity {
     private void initUI() {
         container = (RelativeLayout) findViewById(R.id.splash_container);
         splashImage = (ImageView) findViewById(R.id.splash_image);
+        rootLayout = (LinearLayout) findViewById(R.id.root_layout);
     }
 }
