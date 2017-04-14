@@ -84,7 +84,8 @@ public class AboutActivity extends BaseActivity {
                 web.setDescription("吃什么——为你解决不知道吃什么的问题");//描述
                 // 友盟分享
                 new ShareAction(AboutActivity.this).withMedia(web)
-                        .setDisplayList(SHARE_MEDIA.QQ,SHARE_MEDIA.QZONE,SHARE_MEDIA.WEIXIN)
+                        // 添加微信分享
+                        .setDisplayList(SHARE_MEDIA.QQ,SHARE_MEDIA.QZONE,SHARE_MEDIA.WEIXIN,SHARE_MEDIA.WEIXIN_CIRCLE)
                         .setCallback(new UMShareListener() {
                             @Override
                             public void onStart(SHARE_MEDIA share_media) {

@@ -16,11 +16,11 @@ public class Constant {
     /**
      * TODO 腾讯广告应用ID
      */
-    public static final String AD_APP_ID = "1105431900";
+    public static final String AD_APP_ID = "1106086748";
     /**
      * TODO 广告位ID
      */
-    public static final String AD_ID = "2010529073625641";
+    public static final String AD_ID = "";
     /**
      * qq分享id
      */
@@ -30,13 +30,13 @@ public class Constant {
      */
     public static final String QQ_SHARE_KEY = "v6EUEWLyNQ1DDltX";
     /**
-     * TODO 微信分享id
+     * 微信分享id
      */
-    public static final String WX_SHARE_ID = "wx967daebe835fbeac";
+    public static final String WX_SHARE_ID = "wx16f9c0f4169b29a4";
     /**
-     * TODO 微信分享key
+     * 微信分享key
      */
-    public static final String WX_SHARE_KEY = "5bb696d9ccd75a38c8a0bfe0675559b3";
+    public static final String WX_SHARE_KEY = "d9b73340c241e56508105302d32d85e1";
     /**
      * Bmob更新表的数据ID
      */
