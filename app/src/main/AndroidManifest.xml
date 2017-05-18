@@ -53,6 +53,7 @@
                 <data android:scheme="tencent1106084984"/>
             </intent-filter>
         </activity>
+
         <activity
             android:name="com.umeng.qq.tencent.AssistActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
