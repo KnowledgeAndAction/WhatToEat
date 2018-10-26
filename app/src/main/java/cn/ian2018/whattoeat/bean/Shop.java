@@ -14,6 +14,15 @@ public class Shop extends BmobObject implements Serializable{
     private String name;
     private String phone;
     private String location;
+    private int type;
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 
     public int getId() {
         return id;

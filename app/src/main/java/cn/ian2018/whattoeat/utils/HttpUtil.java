@@ -6,22 +6,25 @@ import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
+import cn.ian2018.whattoeat.MyApplication;
 import cn.ian2018.whattoeat.bean.PhoneInfo;
 import cn.ian2018.whattoeat.bean.Shop;
 import cn.ian2018.whattoeat.bean.ShopMenu;
+import cn.ian2018.whattoeat.db.MyDatabase;
 
 /**
  * Created by Administrator on 2017/3/30/030.
  */
 
 public class HttpUtil {
+    private static MyDatabase db = MyDatabase.getInstance(MyApplication.getContext());
     /**
      * 从Bmob查询数据
      * @param type  商铺类型 1是叫外卖 2是到店吃
      * @param list  数据集合
      * @param result    结果回调接口
      */
-    public static void getData(int type, final List<Shop> list, final OnResult result) {
+    public static void getData(final int type, final List<Shop> list, final OnResult result) {
         BmobQuery<Shop> query = new BmobQuery<>();
         query.addWhereEqualTo("type", type);
         // 返回50条数据，如果不加上这条语句，默认返回10条数据
@@ -31,6 +34,8 @@ public class HttpUtil {
             @Override
             public void done(List<Shop> object, BmobException e) {
                 if (e == null) {
+                    list.clear();
+                    db.deleteShop(type);
                     for (Shop shops : object) {
                         Shop shop = new Shop();
                         shop.setImageUrl(shops.getImageUrl());
@@ -38,6 +43,11 @@ public class HttpUtil {
                         shop.setPhone(shops.getPhone());
                         shop.setName(shops.getName());
                         shop.setId(shops.getId());
+                        shop.setType(shops.getType());
+
+                        // 保存到数据库
+                        db.saveShop(shop);
+
                         list.add(shop);
                     }
                     result.success();
@@ -54,7 +64,7 @@ public class HttpUtil {
         });
     }
 
-    public static void getMenuData(int shopId, final List<ShopMenu> list, final OnResult result) {
+    public static void getMenuData(final int shopId, final List<ShopMenu> list, final OnResult result) {
         BmobQuery<ShopMenu> query = new BmobQuery<>();
         query.addWhereEqualTo("shopId", shopId);
         // 返回50条数据，如果不加上这条语句，默认返回10条数据
@@ -64,11 +74,16 @@ public class HttpUtil {
             @Override
             public void done(List<ShopMenu> object, BmobException e) {
                 if (e == null) {
+                    db.deleteShopMenu(shopId);
                     for (ShopMenu menu : object) {
                         ShopMenu shopMenu = new ShopMenu();
                         shopMenu.setName(menu.getName());
                         shopMenu.setPrice(menu.getPrice());
                         shopMenu.setShopId(menu.getShopId());
+
+                        // 保存到数据库
+                        db.saveMenu(shopMenu);
+
                         list.add(shopMenu);
                     }
                     result.success();

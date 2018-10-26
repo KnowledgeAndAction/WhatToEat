@@ -22,10 +22,12 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.ian2018.whattoeat.MyApplication;
 import cn.ian2018.whattoeat.R;
 import cn.ian2018.whattoeat.adapter.MenuRecyclerAdapter;
 import cn.ian2018.whattoeat.bean.Shop;
 import cn.ian2018.whattoeat.bean.ShopMenu;
+import cn.ian2018.whattoeat.db.MyDatabase;
 import cn.ian2018.whattoeat.utils.HttpUtil;
 import cn.ian2018.whattoeat.utils.ToastUtil;
 import cn.ian2018.whattoeat.view.FullyLinearLayoutManager;
@@ -47,6 +49,7 @@ public class ShopActivity extends BaseActivity {
     private Toolbar toolbar;
     private NestedScrollView nestedScrollView;
     private TextView tv_no_menu;
+    private MyDatabase db = MyDatabase.getInstance(MyApplication.getContext());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,25 +71,34 @@ public class ShopActivity extends BaseActivity {
 
     private void getMenuData(int shopId) {
         showProgressDialog();
-        HttpUtil.getMenuData(shopId, shopMenuList, new HttpUtil.OnResult() {
-            @Override
-            public void success() {
-                if(shopMenuList.size() == 0){
-                    tv_no_menu.setVisibility(View.VISIBLE);
-                } else {
-                    MenuRecyclerAdapter adapter = new MenuRecyclerAdapter(shopMenuList);
-                    recyclerView.setAdapter(adapter);
-                    tv_no_menu.setVisibility(View.GONE);
+        List<ShopMenu> shopMenu = db.getShopMenu(shopId);
+        if (shopMenu.size() > 0) {
+            shopMenuList = shopMenu;
+            MenuRecyclerAdapter adapter = new MenuRecyclerAdapter(shopMenuList);
+            recyclerView.setAdapter(adapter);
+            tv_no_menu.setVisibility(View.GONE);
+            closeProgressDialog();
+        } else {
+            HttpUtil.getMenuData(shopId, shopMenuList, new HttpUtil.OnResult() {
+                @Override
+                public void success() {
+                    if(shopMenuList.size() == 0){
+                        tv_no_menu.setVisibility(View.VISIBLE);
+                    } else {
+                        MenuRecyclerAdapter adapter = new MenuRecyclerAdapter(shopMenuList);
+                        recyclerView.setAdapter(adapter);
+                        tv_no_menu.setVisibility(View.GONE);
+                    }
+                    closeProgressDialog();
                 }
-                closeProgressDialog();
-            }
 
-            @Override
-            public void error() {
-                closeProgressDialog();
-                ToastUtil.showShort("加载失败");
-            }
-        });
+                @Override
+                public void error() {
+                    closeProgressDialog();
+                    ToastUtil.showShort("加载失败");
+                }
+            });
+        }
     }
 
     private void setClick() {

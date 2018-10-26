@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,10 +21,12 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.ian2018.whattoeat.MyApplication;
 import cn.ian2018.whattoeat.R;
 import cn.ian2018.whattoeat.activity.ShopActivity;
 import cn.ian2018.whattoeat.adapter.RecyclerAdapter;
 import cn.ian2018.whattoeat.bean.Shop;
+import cn.ian2018.whattoeat.db.MyDatabase;
 import cn.ian2018.whattoeat.utils.HttpUtil;
 import cn.ian2018.whattoeat.utils.ToastUtil;
 
@@ -38,6 +41,8 @@ public class ShopToEatFragment extends android.support.v4.app.Fragment {
     private List<Shop> shopList = new ArrayList<>();
     private RecyclerAdapter adapter;
     private ProgressDialog progressDialog;
+    private MyDatabase db = MyDatabase.getInstance(MyApplication.getContext());
+    private SwipeRefreshLayout swipeRefresh;
 
     @Nullable
     @Override
@@ -91,19 +96,26 @@ public class ShopToEatFragment extends android.support.v4.app.Fragment {
     private void initData() {
         // 加载数据
         showProgressDialog();
-        HttpUtil.getData(2, shopList, new HttpUtil.OnResult() {
-            @Override
-            public void success() {
-                closeProgressDialog();
-                showData();
-            }
+        List<Shop> shops = db.getShops(2);
+        if (shops.size() > 0) {
+            shopList = shops;
+            closeProgressDialog();
+            showData();
+        } else {
+            HttpUtil.getData(2, shopList, new HttpUtil.OnResult() {
+                @Override
+                public void success() {
+                    closeProgressDialog();
+                    showData();
+                }
 
-            @Override
-            public void error() {
-                closeProgressDialog();
-                ToastUtil.showShort("获取数据失败");
-            }
-        });
+                @Override
+                public void error() {
+                    closeProgressDialog();
+                    ToastUtil.showShort("获取数据失败");
+                }
+            });
+        }
     }
 
     private void showData() {
@@ -166,6 +178,29 @@ public class ShopToEatFragment extends android.support.v4.app.Fragment {
 
         fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         fab.setRippleColor(getResources().getColor(R.color.colorPrimaryDark));
+
+        swipeRefresh = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefresh);
+        // 配置swipeRefresh
+        swipeRefresh.setColorSchemeResources(R.color.colorPrimary , R.color.colorAccent, R.color.colorPrimaryDark);
+        // 设置刷新事件
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                HttpUtil.getData(2, shopList, new HttpUtil.OnResult() {
+                    @Override
+                    public void success() {
+                        swipeRefresh.setRefreshing(false);
+                        showData();
+                    }
+
+                    @Override
+                    public void error() {
+                        swipeRefresh.setRefreshing(false);
+                        ToastUtil.showShort("获取数据失败");
+                    }
+                });
+            }
+        });
     }
 
     private void showProgressDialog() {
